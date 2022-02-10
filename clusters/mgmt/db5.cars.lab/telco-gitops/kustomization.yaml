@@ -1,0 +1,11 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  # Duplicted from main cluster to allow the argocd install to self-manage.
+  - github.com/openshift-telco/telco-gitops/base/configs/telco-gitops?ref=main
+
+resources:
+  - 00-mgmt-base.yaml
+  - 05-gitops-mgmt-telco-configs.yaml

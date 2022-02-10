@@ -1,0 +1,31 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  telco-gitops/cluster-name: db5.cars.lab
+  topology.kubernetes.io/region: db5.cars.lab
+  # Each SITE_ID is a different zone
+  #topology.kubernetes.io/zone: sample-zone
+
+commonAnnotations:
+  # Annotations to work around automatically generated resources
+  # to avoid ArgoCD reporing out-of-sync
+  argocd.argoproj.io/compare-options: IgnoreExtraneous
+  argocd.argoproj.io/sync-options: Prune=false
+
+bases:
+  # Operators for MGMT Clusters (LSO, GitOps, AsSer)
+  - github.com/openshift-telco/telco-gitops/blueprints/mgmt?ref=main
+
+  # Hive Operators and Configs
+  - github.com/openshift-telco/telco-gitops/base/operators/hive?ref=main # CWR: Operator sub
+  - github.com/openshift-telco/telco-gitops/base/configs/hive?ref=main # TODO: Configures version, currently 4.8.5
+
+  # Create custom ArgoCD instance, and sets the ArgoCD up to manage AI, Hive, ?ZTP?
+  - ./telco-gitops
+
+resources:
+  - 01-master-create-lvs-for-lso.yaml # TODO: template b64 obfuscated bash
+  - 02-lso-localvolume-lvs.yaml
+  - 03-lso-filesystemclass-default.yaml # Make default
