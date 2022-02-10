@@ -9,8 +9,8 @@ spec:
     - git:
         directories:
           - path: clusters/mgmt/db5.cars.lab/config-*
-        repoURL: 'CHANGEME'
-        revision: HEAD
+        repoURL: 'https://github.com/redhat-partner-solutions/linseed'
+        revision: 'WiP'
   template:
     metadata:
       name: '00-db5-{{path.basename}}'
@@ -22,5 +22,5 @@ spec:
       project: default
       source:
         path: '{{path}}'
-        repoURL: 'CHANGEME'
-        targetRevision: HEAD
+        repoURL: 'https://github.com/redhat-partner-solutions/linseed'
+        targetRevision: 'WiP'
